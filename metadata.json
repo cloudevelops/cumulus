@@ -8,7 +8,10 @@
   "project_page": "https://github.com/cloudevelops/cumulus",
   "issues_url": "https://github.com/cloudevelops/cumulus/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+    {"name":"puppetlabs-stdlib","version_requirement": ">= 1.0.0"},
+    {"name": "puppetlabs/apt", "version_requirement": ">= 2.0.0 <3.0.0" },
+    {"name":"cumuluslinux-cumulus_interfaces","version_requirement": ">= 1.0.1"},
+    {"name":"cumuluslinux-cumulus_license","version_requirement": ">= 1.0.2"}
   ]
 }
 

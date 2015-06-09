@@ -7,73 +7,219 @@
 3. [Setup - The basics of getting started with cumulus](#setup)
     * [What cumulus affects](#what-cumulus-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with cumulus](#beginning-with-cumulus)
 4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
+6. [Release notes](#release-notes)
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+This module automates Cumulus Linux switch configuration to be convenient and Hiera friendly.
+Simple and convenient to use, wrapping up the basic things and example fragments to actually 
+configure a real switch.
+Tested with Cumulus Linux 2.5.2
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
-
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+Module is wrapper for basic Cumulus modules [cumulus_interface](https://github.com/CumulusNetworks/cumulus-cl-interfaces-puppet) and [cumulus_license](https://github.com/CumulusNetworks/cumulus-cl-license-puppet).
+It deploys various small patches and enables management of switch directly via hiera.
 
 ## Setup
 
 ### What cumulus affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
+* Adds required include into /etc/network/interfaces
+* Optionally deploys patch for Puppet apt provider not to conflict with Sensu module
+* Optionally deletes default user password
+* Optionally installs license
+* Optionally installs debian repo for more packages
+* Provides hiera resources for cumulus_interface, cumulus_bond and cumulus_bridge
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
-
-### Beginning with cumulus
-
-The very basic steps needed for a user to get the module up and running.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+* Make sure dependent modules are installed
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+### Basic usage
 
-## Reference
+```
+class { 'cumulus':
+  license_source => 'puppet:///modules/cloudinfrastack/profile/sw/cumulus.lic',
+  puppet_patch => true,
+  remove_cumulus_password => true,
+  install_debian_repo => true,
+  interface => {
+    eth0 => {
+      ipv4 => ['10.30.1.1/24']
+    },
+    swp1 => {}
+  }
+}
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+```
+
+### Full example with hiera
+
+Include the module
+
+```
+include cumulus
+```
+
+Setup Hiera data
+
+```
+{
+  "cumulus::license_source": "puppet:///modules/cloudinfrastack/profile/sw/cumulus.lic",
+  "remove_cumulus_password": true,
+  "install_debian_repo": true,
+  "cumulus::interface": {
+    "eth0": {
+      "ipv4": ["10.30.1.1/24"]
+    },
+    "swp1": {},
+    "swp2": {},
+    "swp3": {},
+    "swp4": {},
+    "swp5": {},
+    "swp6": {},
+    "swp7": {},
+    "swp8": {},
+    "swp9": {},
+    "swp10": {},
+    "swp11": {},
+    "swp12": {},
+    "swp13": {},
+    "swp14": {},
+    "swp15": {},
+    "swp16": {},
+    "swp17": {},
+    "swp18": {},
+    "swp19": {},
+    "swp20": {},
+    "swp21": {},
+    "swp22": {},
+    "swp23": {},
+    "swp24": {},
+    "swp25": {},
+    "swp26": {},
+    "swp27": {},
+    "swp28": {},
+    "swp29": {},
+    "swp30": {},
+    "swp31": {},
+    "swp32": {},
+    "swp33": {},
+    "swp34": {},
+    "swp35": {},
+    "swp36": {},
+    "swp37": {},
+    "swp38": {},
+    "swp39": {},
+    "swp40": {},
+    "swp41": {},
+    "swp42": {},
+    "swp43": {},
+    "swp44": {},
+    "swp45": {},
+    "swp46": {},
+    "swp47": {},
+    "swp48": {},
+    "swp49": {},
+    "swp50": {},
+    "swp51": {},
+    "swp52": {},
+    "swp53": {},
+    "swp54": {}
+  },
+  "cumulus::bond": {
+    "bond1": {
+      "slaves": ["swp1-2"]
+    },
+    "bond2": {
+      "slaves": ["swp3-4"]
+    },
+    "bond3": {
+      "slaves": ["swp5-6"]
+    },
+    "bond4": {
+      "slaves": ["swp7-8"]
+    },
+    "bond5": {
+      "slaves": ["swp9-10"]
+    },
+    "bond6": {
+      "slaves": ["swp11-12"]
+    },
+    "bond7": {
+      "slaves": ["swp13-14"]
+    },
+    "bond8": {
+      "slaves": ["swp15-16"]
+    },
+    "bond9": {
+      "slaves": ["swp17-18"]
+    },
+    "bond10": {
+      "slaves": ["swp19-20"]
+    },
+    "bond11": {
+      "slaves": ["swp21-22"]
+    },
+    "bond12": {
+      "slaves": ["swp23-24"]
+    },
+    "bond13": {
+      "slaves": ["swp25-26"]
+    },
+    "bond14": {
+      "slaves": ["swp27-28"]
+    },
+    "bond15": {
+      "slaves": ["swp29-30"]
+    },
+    "bond16": {
+      "slaves": ["swp31-32"]
+    },
+    "bond17": {
+      "slaves": ["swp33-34"]
+    },
+    "bond18": {
+      "slaves": ["swp35-36"]
+    },
+    "bond19": {
+      "slaves": ["swp37-38"]
+    },
+    "bond20": {
+      "slaves": ["swp39-40"]
+    },
+    "bond21": {
+      "slaves": ["swp41-42"]
+    },
+    "bond22": {
+      "slaves": ["swp43-44"]
+    },
+    "bond23": {
+      "slaves": ["swp45-46"]
+    }
+  },
+  "cumulus::bridge": {
+    "br802": {
+      "ports": ["bond6.802", "swp48.802"]
+    }
+  }
+}
+```
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Not known :)
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+Feel free to contribute and improve.
 
-## Release Notes/Contributors/Etc **Optional**
+## Release Notes
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+This is first release and serves as implementation example.
