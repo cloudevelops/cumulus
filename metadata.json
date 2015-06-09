@@ -1,0 +1,14 @@
+{
+  "name": "cloudevelops-cumulus",
+  "version": "0.1.0",
+  "author": "Zdenek Janda",
+  "summary": "Cumulus Linux switch general management",
+  "license": "Apache 2.0",
+  "source": "https://github.com/cloudevelops/cumulus",
+  "project_page": "https://github.com/cloudevelops/cumulus",
+  "issues_url": "https://github.com/cloudevelops/cumulus/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
